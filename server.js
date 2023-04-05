@@ -3,7 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require("cors");
-const workoutRoutes = require('./routes/workouts')
+// const workoutRoutes = require('./routes/workouts')
 const userRoutes = require('./routes/user')
 
 // express app
@@ -20,8 +20,9 @@ app.use((req, res, next) => {
   next()
 })
 
+
 // routes
-app.use('/api/workouts', workoutRoutes)
+// app.use('/api/workouts', workoutRoutes)
 app.use('/api/user', userRoutes)
 
 const postSchema = mongoose.Schema({
@@ -67,6 +68,7 @@ app.get("/", (req, res) => {
   res.send("express is here");
 });
 
+
 app.post("/create", (req, res) => {
   const newPost = new Post({
     img: req.body.img,
@@ -83,9 +85,6 @@ app.post("/create", (req, res) => {
     end: req.body.end,
     name:req.body.name,
   });
-
-
-
   newPost
     .save()
     .then((doc) => console.log(doc))
@@ -161,29 +160,26 @@ app.get("/stu_ideas", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-app.post("/create", (req, res) => {
-  const newPost = new Post({
-    img: req.body.img,
-    p1: req.body.p1,
-    p2: req.body.p2,
-    p3: req.body.p3,
-    sub: req.body.sub,
-    text: req.body.text,
-    title: req.body.title,
-    description: req.body.description,
-    overview: req.body.overview,
-    start: req.body.start,
-    end: req.body.end,
-    name:req.body.name,
-  });
-
-
-
-  newPost
-    .save()
-    .then((doc) => console.log(doc))
-    .catch((err) => console.log(err));
-});
+// app.post("/create", (req, res) => {
+//   const newPost = new Post({
+//     img: req.body.img,
+//     p1: req.body.p1,
+//     p2: req.body.p2,
+//     p3: req.body.p3,
+//     sub: req.body.sub,
+//     text: req.body.text,
+//     title: req.body.title,
+//     description: req.body.description,
+//     overview: req.body.overview,
+//     start: req.body.start,
+//     end: req.body.end,
+//     name:req.body.name,
+//   });
+//   newPost
+//     .save()
+//     .then((doc) => console.log(doc))
+//     .catch((err) => console.log(err));
+// });
 
 app.delete("/delete/:id", (req, res) => {
   console.log(req.params);
@@ -309,7 +305,7 @@ stu.updateMany({ $or: [ { "status": { $exists: false } }, { "status": null }, { 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     // listen for requests
-    app.listen(process.env.PORT, () => {
+    app.listen(process.env.PORT || 4000, () => {
       console.log('connected to db & listening on port', process.env.PORT)
     })
   })
