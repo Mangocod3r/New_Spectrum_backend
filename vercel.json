@@ -14,7 +14,8 @@
     ],
     "functions": {
         "api/*": {
-          "memory": 512
+          "memory": 512,
+          "timeout":30
         }
       }
 }
