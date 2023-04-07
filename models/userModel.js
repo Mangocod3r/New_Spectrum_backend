@@ -76,7 +76,6 @@ userSchema.statics.login = async function(email, password) {
     throw Error('Incorrect password')
   }
 
-// console.log('**********7777777777*')
   return user
 }
 
