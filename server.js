@@ -56,6 +56,7 @@ const stuidea = mongoose.Schema({
   my_idea:String,
   name:String,
   overview: String,
+  img:String,
   status: {
     type: String,
     default: 'pending'
@@ -63,6 +64,46 @@ const stuidea = mongoose.Schema({
 
 const stu = mongoose.model("stu_idea", stuidea);
 
+const angelmain = mongoose.Schema({
+  projectName:String,
+  entrepreneur:String,
+  investor:String,
+  amount: {
+    type: String,
+    default: '0'
+  },
+  status: {
+    type: String,
+    default: 'pending'
+  }});
+
+const angel = mongoose.model("investor_history", angelmain);
+
+const inv_req = mongoose.Schema({
+  projectName:String,
+  name:String,
+  investor:String,
+  message: String,
+  amount: {
+    type: String,
+    default: '0'
+  },
+  status: {
+    type: String,
+    default: 'pending'
+  }
+  });
+
+const invreq = mongoose.model("investor_requests", inv_req);
+
+const pitch_evt = mongoose.Schema({
+  title:String,
+  start:String,
+  end:String,
+  description: String,
+ });
+
+const pitch = mongoose.model("pitch_events", pitch_evt);
 
 app.get("/", (req, res) => {
   res.send("express is here");
@@ -91,6 +132,28 @@ app.post("/create", (req, res) => {
     .catch((err) => console.log(err));
 });
 
+app.post("/prop", (req, res) => {
+  const newPost = new invreq({
+    projectName: req.body.projectName,
+    message: req.body.message,
+    // p2: req.body.p2,
+    // p3: req.body.p3,
+    // sub: req.body.sub,
+    // text: req.body.text,
+    // title: req.body.title,
+    // header:req.body.header,
+    // description: req.body.description,
+    // overview: req.body.overview,
+    // start: req.body.start,
+    // end: req.body.end,
+    name:req.body.name,
+  });
+  newPost
+    .save()
+    .then((doc) => console.log(doc))
+    .catch((err) => console.log(err));
+});
+
 app.get("/posts", (req, res) => {
   Post.find()
     .then((items) => res.json(items))
@@ -103,6 +166,8 @@ app.post("/stu_km", (req, res) => {
     title: req.body.title,
     my_idea: req.body.my_idea,
     name: req.body.name,
+    img:req.body.img,
+    // image:req.body.name,
     // status: req.body.status,
     // description: eq.body.description,
     // my_idea:req.body.my_idea,
@@ -244,6 +309,15 @@ app.put('/stu_ideas/:id', async (req, res) => {
   }
 });
 
+app.put('/api/investment-requests/:id', async (req, res) => {
+  try {
+    const updatedIdea = await invreq.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.send(updatedIdea);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 // app.put('/stu_ideas/:id', async (req, res) => {
 //   try {
 //     const { id } = req.params;
@@ -298,7 +372,33 @@ stu.updateMany({ $or: [ { "status": { $exists: false } }, { "status": null }, { 
   console.log("Number of documents updated: " + numAffected.nModified);
 });
 
+invreq.updateMany({ $or: [ { "status": { $exists: false } }, { "status": null }, { "status": "" } ] }, { $set: { "status": "pending" } }, function(err, numAffected) {
+  console.log("Number of documents updated: " + numAffected.nModified);
+});
 
+invreq.updateMany({ $or: [ { "amount": { $exists: false } }, { "amount": null }, { "amount": "" } ] }, { $set: { "amount": "0" } }, function(err, numAffected) {
+  console.log("Number of documents updated: " + numAffected.nModified);
+});
+
+//angel investors
+
+app.get("/api/investment-history", (req, res) => {
+  angel.find()
+    .then((items) => res.json(items))
+    .catch((err) => console.log(err));
+});
+
+app.get("/api/investment-requests", (req, res) => {
+  invreq.find()
+    .then((items) => res.json(items))
+    .catch((err) => console.log(err));
+});
+
+app.get("/api/pitch-events", (req, res) => {
+  pitch.find()
+    .then((items) => res.json(items))
+    .catch((err) => console.log(err));
+});
 
 
 // connect to db
