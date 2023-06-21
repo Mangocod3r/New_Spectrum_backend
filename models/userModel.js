@@ -23,7 +23,7 @@ const userSchema = new Schema({
     required: true,
     validate: {
       validator: function (value) {
-        return value === this.password;
+        return true;
       },
       message: 'Password confirmation does not match'
     }
@@ -37,8 +37,8 @@ const userSchema = new Schema({
 // static signup method
 userSchema.statics.signup = async function (name, email, password, passwordConfirmation, role) {
 
-  // validation
-  if (!email || !password || !passwordConfirmation) {
+  //validation
+  if (!email || !password || !passwordConfirmation ) {
     throw Error('All fields must be filled')
   }
   if (!validator.isEmail(email)) {
@@ -51,9 +51,9 @@ userSchema.statics.signup = async function (name, email, password, passwordConfi
     const errorMessage = "Password not strong enough. Please ensure that your password is at least 8 characters long, contains at least one uppercase letter, one lowercase letter, one number, and one special symbol.";
     throw new Error(errorMessage);
   }
-  if (password !== passwordConfirmation) {
-    throw Error('Password and password confirmation do not match');
-  }
+  // if (password !== passwordConfirmation) {
+  //   throw Error('Password and password confirmation do not match');
+  // }
 
   const exists = await this.findOne({ email })
 
