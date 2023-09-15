@@ -13,7 +13,7 @@ const app = express()
 // middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(cors())
+// app.use(cors())
 
 // Allow requests from the origin of your mobile app during development
 app.use(cors({
