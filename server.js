@@ -17,7 +17,7 @@ app.use(cors())
 
 // Allow requests from the origin of your mobile app during development
 app.use(cors({
-  origin: 'http://localhost:YOUR_MOBILE_APP_PORT', // Replace with the correct port
+  origin: '*', // Replace with the correct port
   credentials: true, // You may need this option if you're sending cookies or sessions
 }));
 
