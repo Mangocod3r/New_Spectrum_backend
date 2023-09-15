@@ -3,6 +3,10 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require("cors");
+const corsOptions = {
+  origin: 'http://localhost:3000', // Replace with your frontend URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+};
 //const cors = require('cors')({ origin: true });
 // const workoutRoutes = require('./routes/workouts')
 const userRoutes = require('./routes/user')
@@ -13,8 +17,8 @@ const app = express()
 // middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(cors())
-
+// app.use(cors())
+app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
   console.log(req.path, req.method)
