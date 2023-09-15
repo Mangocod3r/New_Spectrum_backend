@@ -3,10 +3,6 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require("cors");
-const corsOptions = {
-  origin: '*', // Replace with your frontend URL
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-};
 //const cors = require('cors')({ origin: true });
 // const workoutRoutes = require('./routes/workouts')
 const userRoutes = require('./routes/user')
@@ -17,21 +13,18 @@ const app = express()
 // middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-// app.use(cors())
-app.use(cors(corsOptions));
+app.use(cors())
+
+// Allow requests from the origin of your mobile app during development
+app.use(cors({
+  origin: 'http://localhost:YOUR_MOBILE_APP_PORT', // Replace with the correct port
+  credentials: true, // You may need this option if you're sending cookies or sessions
+}));
 
 app.use((req, res, next) => {
-  // Set CORS headers
-  res.header('Access-Control-Allow-Origin', '*'); // Replace with your frontend URL
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
-
-// app.use((req, res, next) => {
-//   console.log(req.path, req.method)
-//   next()
-// })
+  console.log(req.path, req.method)
+  next()
+})
 
 
 // routes
