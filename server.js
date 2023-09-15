@@ -4,7 +4,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require("cors");
 const corsOptions = {
-  origin: 'http://localhost:3000', // Replace with your frontend URL
+  origin: '*', // Replace with your frontend URL
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 };
 //const cors = require('cors')({ origin: true });
@@ -22,7 +22,7 @@ app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
   // Set CORS headers
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // Replace with your frontend URL
+  res.header('Access-Control-Allow-Origin', '*'); // Replace with your frontend URL
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
