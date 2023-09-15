@@ -21,9 +21,17 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
-  console.log(req.path, req.method)
-  next()
-})
+  // Set CORS headers
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // Replace with your frontend URL
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
+// app.use((req, res, next) => {
+//   console.log(req.path, req.method)
+//   next()
+// })
 
 
 // routes
